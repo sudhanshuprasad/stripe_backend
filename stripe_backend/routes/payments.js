@@ -21,12 +21,12 @@ router.post("/", async (req, res) => {
         .then(customer => {
             stripe.charges.create({
                 amount: product.price * 100,
-                Currency: "inr",
+                currency: "INR",
                 customer: customer.id,
                 receipt_email: token.email,
                 description: `your product ${product.name} has been ordered`,
                 shipping: {
-                    name: token.card.name,
+                    name: token.card?.name,
                     address: {
                         country: token.card.address_country,
                     }

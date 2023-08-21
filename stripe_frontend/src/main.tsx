@@ -10,7 +10,7 @@ import './index.css'
 
 
 // import {loadEnv} from "vite"
-console.log(REACT_APP_STRIPE_KEY)
+// console.log(REACT_APP_STRIPE_KEY)
 
 // import * as dotenv from "dotenv";
 // dotenv.config({ path: '/.env' });

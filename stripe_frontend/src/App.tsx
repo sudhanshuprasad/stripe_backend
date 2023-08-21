@@ -7,6 +7,10 @@ import './App.css'
 // dotenv.config({ path: '/.env' });
 
 import StripeCheckout from 'react-stripe-checkout';
+import axios from 'axios';
+
+
+console.log(REACT_APP_STRIPE_KEY)
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,10 +21,43 @@ function App() {
     productBY: "fal dukaan"
   });
 
-  const makePayment = token => {
-    const body = {}
-    const header ={}
-  }
+
+  const makePayment = async (token, adresses) => {
+    const res = await axios.post("http://127.0.0.1:8282/payments", {
+      token
+    });
+    const { status } = res.data;
+    if (status === "success") {
+      toast("Success ! Check emails for details", {
+        type: "success"
+      });
+    } else {
+      toast("Something went wrong", {
+        type: "failure"
+      });
+    }
+  };
+
+  // const makePayment = token => {
+  //   const body = {
+  //     token,
+  //     product
+  //   }
+  //   const header = {
+  //     "Content-Type": "applicaation/json"
+  //   }
+
+  //   return fetch('http://127.0.0.1:8282/payments', {
+  //     method: "POST",
+  //     headers,
+  //     body: JSON.stringify(body)
+  //   })
+  //     .then(response => {
+  //       console.log("response: ", response)
+  //       const status = { response }
+  //       console.log("status: ", status)
+  //     }).catch(err => console.log(err))
+  // }
 
   // console.log(import.meta.env.REACT_APP_STRIPE_KEY)
 
@@ -38,14 +75,23 @@ function App() {
       <div className="card">
 
         <div>
-          <button className='pay_button' onClick={() => setCount((count) => count + 1)}>
-            pay now {count}
-          </button>
+          <button className='pay_button' onClick={() => setCount((count) => count + 1)}>pay now {count}</button>
+          
+
+          <StripeCheckout
+        stripeKey={REACT_APP_STRIPE_KEY}
+        token={makePayment}
+        billingAddress
+        shippingAddress
+        amount={5 * 100}
+        currency='INR'
+        name="paisa de"
+      />
           {/* <StripeCheckout
-          stripeKey={""}
-          token={makePayment}
-          name=''
-          amount={product.price*100}
+            stripeKey={""}
+            token={makePayment}
+            name=''
+            amount={product.price * 100}
           ></StripeCheckout> */}
         </div>
 
