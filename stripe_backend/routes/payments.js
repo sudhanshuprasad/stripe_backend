@@ -14,9 +14,10 @@ router.post("/", async (req, res) => {
     const idempotencyKey = uuid()
     console.log(idempotencyKey)
 
-    const stripe_customer = stripe.customers.create({
+    const stripe_customer = await stripe.customers.create({
         email: token.email,
-        source: token.id
+        source: token.id,
+        description: 'My First Test Customer (created for API docs at https://www.stripe.com/docs/api)',
     })
         .then(customer => {
             stripe.charges.create({
